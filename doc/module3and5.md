@@ -8,17 +8,19 @@
 ## 1. Foundational Prompting Techniques
 
 ### 1.1 The 4S Principle (Single, Specific, Short, Surround)
-**Goal:** Learn to craft prompts that are clear and actionable.
+**Goal:** Learn to craft prompts that are clear and actionable.  
+**detail**: The 4S Principle stands for Single, Specific, Short, and Surround. It encourages you to write prompts that focus on one task (Single), are unambiguous (Specific), use concise language (Short), and provide enough context or code comments (Surround) to guide Copilot effectively. This approach reduces misunderstandings and increases the quality of Copilot’s suggestions.
 
-#### ❌ Bad Prompt Examples
-- "Add a feature."
-- "Make the app better."
+#### 4S Breakdown with Examples
 
-#### ✅ Good Prompt Examples
-- "Add a due date field to each todo item and display it in the dashboard."
-- "Surround the code for adding a new task with comments explaining each step."
+| Principle | ❌ Bad Prompt | ✅ Good Prompt |
+|-----------|--------------|---------------|
+| **Single** | "Add due date and priority to tasks." | "Add a due date field to each todo item." |
+| **Specific** | "Improve the dashboard." | "Display each todo item's due date in the dashboard table." |
+| **Short** | "Can you please update the code so that every time a user adds a new task, the app will also ask for a due date and then show that due date in the dashboard view?" | "Add a due date field to the add task form and show it in the dashboard." |
+| **Surround** | "Add a due date." | "Add a due date field to each todo item. // Add field to model // Update form // Show in dashboard" |
 
-#### Demo (on `feature/4s-principle` branch)
+#### Demo (on `module-3-prompting` branch)
 - **Task:** Add a due date to each todo item.
 - **Prompt:**  
   *"Add a due date field to each todo item in the Flask app. Update the add task form, backend logic, and dashboard template to support this."*
@@ -35,7 +37,8 @@
 ---
 
 ### 1.2 Zero-Shot Prompting
-**Goal:** Use Copilot with a single, clear instruction—no examples.
+**Goal:** Use Copilot with a single, clear instruction—no examples.  
+**detail**: Zero-shot prompting involves giving Copilot a direct, standalone instruction without any examples or demonstrations. The model relies solely on the clarity and completeness of your prompt. This technique is useful for straightforward tasks but requires you to be precise to avoid ambiguity or misinterpretation.
 
 #### ❌ Bad Prompt Examples
 - "Make tasks deletable."
@@ -61,7 +64,8 @@
 ---
 
 ### 1.3 Few-Shot Prompting
-**Goal:** Guide Copilot by providing examples.
+**Goal:** Guide Copilot by providing examples.  
+**detail**: Few-shot prompting means you provide one or more examples in your prompt to show Copilot the pattern or style you want. By demonstrating how to solve a similar problem, you help Copilot generalize and apply the same logic to new, related tasks. This is especially helpful for more complex or nuanced requirements.
 
 #### ❌ Bad Prompt Examples
 - "Add another feature like marking tasks as important."
@@ -70,7 +74,7 @@
 - "Here’s how to add a completed status to a task:
   1. Add a 'completed' field to the task.
   2. Update the UI to show completed tasks.
-  Now, add an 'important' field to each task and display it with a star icon if set."
+  3. Now, add an 'important' field to each task and display it with a star icon if set."
 
 #### Demo (on `feature/few-shot-prompting` branch)
 - **Task:** Add an “important” flag to tasks.
@@ -90,7 +94,8 @@
 ## 2. Handling Copilot Limitations
 
 ### 2.1 Hallucination Handling
-**Goal:** Detect and mitigate Copilot’s “hallucinations” (confident but incorrect code).
+**Goal:** Detect and mitigate Copilot’s “hallucinations” (confident but incorrect code).  
+**detail**: Hallucination handling is about recognizing when Copilot generates code that looks plausible but is actually incorrect or based on false assumptions. By asking Copilot to explain its reasoning, list assumptions, or reference dependencies, you can catch and correct these errors before they cause issues in your codebase.
 
 #### ❌ Bad Prompt Examples
 - "Add email notification when a task is completed." (without checking if email config exists)
@@ -117,7 +122,8 @@
 ## 3. Advanced Prompting Techniques
 
 ### 3.1 Chain-of-Thought Prompting
-**Goal:** Guide Copilot to reason step-by-step.
+**Goal:** Guide Copilot to reason step-by-step.  
+**detail**: Chain-of-thought prompting breaks down a complex task into a sequence of smaller, logical steps. By explicitly listing each step in your prompt, you help Copilot follow a clear path to the solution, improving accuracy and making the generated code easier to understand and debug.
 
 #### ❌ Bad Prompt Examples
 - "Add a search feature."
@@ -144,7 +150,8 @@
 ---
 
 ### 3.2 Mega-Prompts
-**Goal:** Use detailed, multi-part prompts for complex features.
+**Goal:** Use detailed, multi-part prompts for complex features.  
+**detail**: Mega-prompts are comprehensive instructions that cover multiple requirements or sub-tasks in a single prompt. They are useful for implementing complex features but can risk overwhelming Copilot or causing it to miss details. Structuring your mega-prompt clearly and logically helps Copilot deliver more complete solutions.
 
 #### ❌ Bad Prompt Examples
 - "Add user authentication."
@@ -172,7 +179,8 @@
 ---
 
 ### 3.3 Adaptive Prompting / Self-Refinement
-**Goal:** Iteratively refine prompts based on Copilot’s output.
+**Goal:** Iteratively refine prompts based on Copilot’s output.  
+**detail**: Adaptive prompting is an iterative process where you review Copilot’s output, identify gaps or errors, and adjust your prompt to improve results. You can also ask Copilot to critique or refine its own suggestions, leading to higher-quality code through self-refinement.
 
 #### ❌ Bad Prompt Examples
 - "Fix the bug."
@@ -196,7 +204,8 @@
 ---
 
 ### 3.4 Multimodal Prompting
-**Goal:** Use code, comments, and UI context to guide Copilot.
+**Goal:** Use code, comments, and UI context to guide Copilot.  
+**detail**: Multimodal prompting involves providing Copilot with multiple types of context—such as code snippets, comments, UI descriptions, or file references—to guide its suggestions. This technique is especially effective for tasks that span different layers of your application, like updating both backend logic and frontend UI.
 
 #### ❌ Bad Prompt Examples
 - "Make the UI look better."
@@ -220,7 +229,8 @@
 ---
 
 ### 3.5 Role-Play Prompting
-**Goal:** Ask Copilot to act as a specific role (e.g., code reviewer, security expert).
+**Goal:** Ask Copilot to act as a specific role (e.g., code reviewer, security expert).  
+**detail**: Role-play prompting instructs Copilot to take on a particular persona or expertise, such as a security auditor or code reviewer. This can help you get more targeted feedback, uncover issues you might miss, or receive suggestions from a specific perspective.
 
 #### ❌ Bad Prompt Examples
 - "Check my code."
@@ -262,4 +272,4 @@
 ---
 
 **Happy Prompting!**  
-*Branch after each segment: `feature/<technique
+*Branch after each segment: `feature/<technique>`*

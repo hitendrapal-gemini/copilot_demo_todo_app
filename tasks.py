@@ -7,6 +7,7 @@ tasks = Blueprint('tasks', __name__)
 TASK_DICT = {'Items': []}  # Placeholder for task list, not used in this version
 
 
+
 @tasks.route('/')
 def home():
     # Fetch tasks from DynamoDB
@@ -14,15 +15,18 @@ def home():
     tasks_data = TASK_DICT.get('Items', [])
     return render_template('dashboard.html', tasks=tasks_data)
 
+
 @tasks.route('/add', methods=['POST'])
 def add_task():
     task_name = request.form.get('task_name')
+    due_date = request.form.get('due_date')  # Get due date from form
     if task_name:
         task_id = generate_task_id()
         global TASK_DICT
         TASK_DICT['Items'].append({
             'task_id': task_id,
             'task_name': task_name,
+            'due_date': due_date,  # Store due date
             'completed': False,
         })
         flash('Task added successfully!', 'success')
