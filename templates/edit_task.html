@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        Edit Task
+    </div>
+    <div class="container">
+        <h2>Edit Task</h2>
+        <form action="{{ url_for('tasks.edit_task', task_id=task['task_id']) }}" method="POST" class="add-task-form">
+            <input type="text" name="task_name" value="{{ task['task_name'] }}" required>
+            <input type="date" name="due_date" value="{{ task['due_date'] }}">
+            <button type="submit">Update Task</button>
+        </form>
+        <a href="{{ url_for('tasks.home') }}">Back to Dashboard</a>
+    </div>
+</body>
+</html>

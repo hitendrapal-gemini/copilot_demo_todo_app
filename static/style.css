@@ -1,4 +1,3 @@
-
 /* General reset and font settings */
 * {
     margin: 0;
@@ -124,4 +123,22 @@ body {
 .flash-message.error {
     background-color: #f44336;
     color: white;
+}
+
+.task-item a.edit-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #FFD600; /* Yellow */
+    color: #333;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.task-item a.edit-btn:hover {
+    background-color: #FFEA00;
+    color: #222;
 }

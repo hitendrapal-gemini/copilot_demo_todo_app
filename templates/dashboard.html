@@ -51,6 +51,9 @@
                         <span>(Completed)</span>
                     {% endif %}
                     
+                    <!-- Edit task -->
+                    <a href="{{ url_for('tasks.edit_task', task_id=task['task_id']) }}" class="edit-btn" style="margin-right:8px;">Edit</a>
+                    
                     <!-- Delete task -->
                     <form action="{{ url_for('tasks.delete_task', task_id=task['task_id']) }}" method="POST" style="display:inline;">
                         <button type="submit">Delete</button>
