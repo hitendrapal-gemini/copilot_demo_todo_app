@@ -19,6 +19,7 @@ def home():
 
 @tasks.route('/add', methods=['POST'])
 def add_task():
+    global TASK_DICT
     task_name = request.form.get('task_name')
     due_date = request.form.get('due_date')  # Get due date from form
 
@@ -35,8 +36,7 @@ def add_task():
             return redirect(url_for('tasks.home'))
 
     if task_name:
-        task_id = generate_task_id()
-        global TASK_DICT
+        task_id = generate_task_id(TASK_DICT)
         TASK_DICT['Items'].append({
             'task_id': task_id,
             'task_name': task_name,

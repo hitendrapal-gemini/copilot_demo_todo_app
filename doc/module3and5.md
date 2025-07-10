@@ -77,18 +77,49 @@
 **detail**: Few-shot prompting means you provide one or more examples in your prompt to show Copilot the pattern or style you want. By demonstrating how to solve a similar problem, you help Copilot generalize and apply the same logic to new, related tasks. This is especially helpful for more complex or nuanced requirements.
 
 #### ❌ Bad Prompt Examples
-- "Add another feature like marking tasks as important."
+```Funtion to get a unique identifier for a task```
 
 #### ✅ Good Prompt Examples
-- "Here’s how to add a completed status to a task:
-  1. Add a 'completed' field to the task.
-  2. Update the UI to show completed tasks.
-  3. Now, add an 'important' field to each task and display it with a star icon if set."
+```
+Funtion to get a unique identifier for a task.
+New task ID just greater than the maximum task ID in the provided dictionary.
+Example 1:
+task_dict = {"Items": [{"task_id": "TASK-1, .."},.. {"task_id": "TASK-6, .."}]}
+task_id = generate_task_id(task_dict)  # Returns a "TASK-7"
+
+Example 2:
+task_dict = {"Items": [{"task_id": "TASK-78, .."},.. {"task_id": "TASK-99, .."}]}
+task_id = generate_task_id(task_dict)  # Returns a "TASK-100"
+
+Also change the usage of generate_task_id in the code
+```
 
 #### Demo (on `feature/few-shot-prompting` branch)
-- **Task:** Add an “important” flag to tasks.
-- **Prompt:**  
-  *"Example: To add a completed status, we added a 'completed' field and updated the UI. Now, add an 'important' field to each task and show a star icon for important tasks."*
+- **Task:** Change the format of the Task ID.
+- **Prompt:** 
+```Funtion to get a unique identifier for a task.
+New task ID just greater than the maximum task ID in the provided dictionary.
+Example 1:
+task_dict = {"Items": [{"task_id": "TASK-1, .."},.. {"task_id": "TASK-6, .."}]}
+task_id = generate_task_id(task_dict)  # Returns a "TASK-7"
+
+Example 2:
+task_dict = {"Items": [{"task_id": "TASK-78, .."},.. {"task_id": "TASK-99, .."}]}
+task_id = generate_task_id(task_dict)  # Returns a "TASK-100"
+```
+- **Fix Error Prompt:**
+```
+Fix the error
+
+Traceback (most recent call last):
+  File "C:\Users\Tarinder.Singh\projects\copilot_demo_todo_app\app.py", line 2, in <module>
+    from tasks import tasks 
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Tarinder.Singh\projects\copilot_demo_todo_app\tasks.py", line 39
+    global TASK_DICT
+    ^^^^^^^^^^^^^^^^
+SyntaxError: name 'TASK_DICT' is used prior to global declaration
+```
 
 #### Reflective Questions
 - How does providing an example change Copilot’s output?
