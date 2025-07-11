@@ -174,10 +174,13 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
   2. Filter tasks based on the search query.
   3. Display only matching tasks."
 
-#### Demo (on `feature/chain-of-thought` branch)
+#### Demo (on `module-5-prompting` branch)
 - **Task:** Add search functionality.
 - **Prompt:**  
-  *"Step 1: Add a search input box to the dashboard. Step 2: Filter the displayed tasks based on the search query. Step 3: Show only tasks that match the query."*
+  *" Add search functionality as mentioned below
+    Step 1: Add a search input box to the dashboard. 
+    Step 2: Filter the displayed tasks based on the search query.
+    Step 3: Show only tasks that match the query."*
 
 #### Reflective Questions
 - How does breaking down the task help Copilot?

@@ -14,7 +14,13 @@ def home():
     # Fetch tasks from DynamoDB
     global TASK_DICT
     tasks_data = TASK_DICT.get('Items', [])
-    return render_template('dashboard.html', tasks=tasks_data)
+    search_query = request.args.get('search', '').strip()
+    if search_query:
+        tasks_data = [
+            task for task in tasks_data
+            if search_query.lower() in task['task_name'].lower()
+        ]
+    return render_template('dashboard.html', tasks=tasks_data, search=search_query)
 
 
 @tasks.route('/add', methods=['POST'])

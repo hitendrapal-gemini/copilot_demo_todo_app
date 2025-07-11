@@ -29,6 +29,12 @@
             {% endif %}
         {% endwith %}
 
+        <!-- Search Form -->
+        <form action="{{ url_for('tasks.home') }}" method="GET" class="search-form">
+            <input type="text" name="search" placeholder="Search tasks..." value="{{ search|default('') }}">
+            <button type="submit">Search</button>
+        </form>
+
         <!-- Add Task Form -->
         <form action="{{ url_for('tasks.add_task') }}" method="POST" class="add-task-form">
             <input type="text" name="task_name" placeholder="Enter a new task" required>
