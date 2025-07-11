@@ -51,7 +51,7 @@
 - "Add a feature to allow users to edit the name and due date of an existing todo item directly from the dashboard."
 - "Add a feature to allow users to edit the name and due date of an existing todo item directly from the dashboard. Style the Edit button with a yellow background color, similar to how the Complete button is blue and the Delete button is red."
 
-#### Demo (on `feature/zero-shot-prompting` branch)
+#### Demo (on `module-3-prompting` branch)
 - **Task 1:** Prevent users from selecting a past date as the due date.
   - **Prompt:**  
     *"Ensure that the due date selected for a new task cannot be in the past. Only allow today or future dates in the add task form."*
@@ -94,7 +94,7 @@ task_id = generate_task_id(task_dict)  # Returns a "TASK-100"
 Also change the usage of generate_task_id in the code
 ```
 
-#### Demo (on `feature/few-shot-prompting` branch)
+#### Demo (on `module-3-prompting` branch)
 - **Task:** Change the format of the Task ID.
 - **Prompt:** 
 ```Funtion to get a unique identifier for a task.
