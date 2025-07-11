@@ -10,6 +10,10 @@
     <!-- Navbar -->
     <div class="navbar">
         To-Do List
+        <nav>
+            <span>Welcome, {{ user.name }}!</span>
+            <a href="{{ url_for('tasks.logout') }}">Logout</a>
+        </nav>
     </div>
 
     <!-- Main content -->

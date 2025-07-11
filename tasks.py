@@ -2,6 +2,8 @@ from flask import Blueprint, request, redirect, url_for, render_template, flash
 from utils import generate_task_id  # Assuming this function is defined in utils.py
 from config import Config
 from datetime import datetime
+from flask_login import login_user, logout_user, login_required, current_user
+from user import User, users
 
 tasks = Blueprint('tasks', __name__)
 
@@ -9,7 +11,29 @@ TASK_DICT = {'Items': []}  # Placeholder for task list, not used in this version
 
 
 
+@tasks.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = users.get(username)
+        if user and user.check_password(password):
+            login_user(user)
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('tasks.home'))
+        else:
+            flash('Invalid credentials.', 'danger')
+    return render_template('login.html')
+
+@tasks.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Logged out.', 'info')
+    return redirect(url_for('tasks.login'))
+
 @tasks.route('/')
+@login_required
 def home():
     # Fetch tasks from DynamoDB
     global TASK_DICT
@@ -20,7 +44,7 @@ def home():
             task for task in tasks_data
             if search_query.lower() in task['task_name'].lower()
         ]
-    return render_template('dashboard.html', tasks=tasks_data, search=search_query)
+    return render_template('dashboard.html', tasks=tasks_data, search=search_query, user=current_user)
 
 
 @tasks.route('/add', methods=['POST'])
