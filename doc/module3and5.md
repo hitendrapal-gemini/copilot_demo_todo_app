@@ -174,10 +174,13 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
   2. Filter tasks based on the search query.
   3. Display only matching tasks."
 
-#### Demo (on `feature/chain-of-thought` branch)
+#### Demo (on `module-5-prompting` branch)
 - **Task:** Add search functionality.
 - **Prompt:**  
-  *"Step 1: Add a search input box to the dashboard. Step 2: Filter the displayed tasks based on the search query. Step 3: Show only tasks that match the query."*
+  *" Add search functionality as mentioned below
+    Step 1: Add a search input box to the dashboard. 
+    Step 2: Filter the displayed tasks based on the search query.
+    Step 3: Show only tasks that match the query."*
 
 #### Reflective Questions
 - How does breaking down the task help Copilot?
@@ -197,16 +200,16 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 - "Add user authentication."
 
 #### ✅ Good Prompt Examples
-- "Add user authentication to the Flask app:
+- "#codebase Add user authentication to the Flask app:
   - Use Flask-Login.
   - Add login and logout routes.
   - Protect the dashboard so only logged-in users can access it.
   - Show the logged-in user’s name in the navbar."
 
-#### Demo (on `feature/mega-prompt` branch)
+#### Demo (on `module-5-prompting` branch)
 - **Task:** Add authentication.
 - **Prompt:**  
-  *"Add user authentication using Flask-Login. Implement login/logout routes, protect the dashboard, and display the user’s name in the navbar."*
+  *" #codebase Add user authentication using Flask-Login. Implement login/logout routes, protect the dashboard, and display the user’s name in the navbar."*
 
 #### Reflective Questions
 - What are the risks of very long prompts?
@@ -223,15 +226,20 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 **detail**: Adaptive prompting is an iterative process where you review Copilot’s output, identify gaps or errors, and adjust your prompt to improve results. You can also ask Copilot to critique or refine its own suggestions, leading to higher-quality code through self-refinement.
 
 #### ❌ Bad Prompt Examples
-- "Fix the bug."
+- "Add "Tags" feature for each todo item, users should be able to assign multiple tags."
 
 #### ✅ Good Prompt Examples
-- "The delete button sometimes doesn’t work. First, explain what might be wrong. Then, suggest a fix and explain your reasoning."
+- "Add "Tags" feature for each todo item. Users should be able to assign multiple tags to a single todo. How should I approach this?"
 
-#### Demo (on `feature/adaptive-prompting` branch)
-- **Task:** Debug the delete button.
-- **Prompt:**  
-  *"The delete button on the dashboard sometimes fails. First, explain possible causes. Then, suggest a fix and explain your reasoning."*
+#### Demo (on `module-5-prompting` branch)
+- **Task:** Add "Tags" feature for each todo item.
+- **Ask Initial Prompt:**  
+"@workspace Add "Tags" feature for each todo item. Users should be able to assign multiple tags to a single todo. How should I approach this?"
+- **Refine Prompt:**
+"When adding/editing a todo, what's the best way for users to input multiple tags? Should it be a text input with auto-suggestion, checkboxes, or a multi-select dropdown?"
+- **Edit Final Prompt:**
+"#codebase Add "Tags" feature for each todo item. Users should be able to assign multiple tags to a single todo. Use a multi-select dropdown with auto-suggestion (e.g., Select2 or Bootstrap Tags Input)"
+
 
 #### Reflective Questions
 - How do you adapt your prompt after seeing Copilot’s output?
@@ -242,8 +250,32 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 - [Self-Refinement in LLMs](https://arxiv.org/abs/2303.17651)
 
 ---
+### 3.4 Role-Play Prompting
+**Goal:** Ask Copilot to act as a specific role (e.g., code reviewer, security expert).  
+**detail**: Role-play prompting instructs Copilot to take on a particular persona or expertise, such as a security auditor or code reviewer. This can help you get more targeted feedback, uncover issues you might miss, or receive suggestions from a specific perspective.
 
-### 3.4 Multimodal Prompting
+#### ❌ Bad Prompt Examples
+- "Check my code for improvement."
+
+#### ✅ Good Prompt Examples
+- "Act as a security expert. Review the Flask app for common security issues and suggest improvements."
+
+#### Demo (on `module-5-prompting` branch)
+- **Task:** Security review.
+- **Prompt:**  
+  *"@workspace Act as a security expert. Review the Flask app for vulnerabilities such as XSS, CSRF, insecure secrets, and OWASP 10. Suggest code changes to improve security."*
+
+#### Reflective Questions
+- How does role-play change Copilot’s output?
+- What if you ask Copilot to act as a beginner?
+- How would you combine role-play with other techniques?
+
+#### Learn More
+- [Role Prompting](https://platform.openai.com/docs/guides/prompt-engineering/strategies#role-prompting)
+
+---
+
+### 3.5 Multimodal Prompting
 **Goal:** Use code, comments, and UI context to guide Copilot.  
 **detail**: Multimodal prompting involves providing Copilot with multiple types of context—such as code snippets, comments, UI descriptions, or file references—to guide its suggestions. This technique is especially effective for tasks that span different layers of your application, like updating both backend logic and frontend UI.
 
@@ -253,7 +285,7 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 #### ✅ Good Prompt Examples
 - "Update the dashboard.html and style.css to make the task list more visually appealing. Add a hover effect to each task item and improve the color scheme."
 
-#### Demo (on `feature/multimodal-prompting` branch)
+#### Demo (on `module-5-prompting` branch)
 - **Task:** Improve UI.
 - **Prompt:**  
   *"Update dashboard.html and style.css to add a hover effect to each task item and use a modern color palette."*
@@ -268,30 +300,6 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 
 ---
 
-### 3.5 Role-Play Prompting
-**Goal:** Ask Copilot to act as a specific role (e.g., code reviewer, security expert).  
-**detail**: Role-play prompting instructs Copilot to take on a particular persona or expertise, such as a security auditor or code reviewer. This can help you get more targeted feedback, uncover issues you might miss, or receive suggestions from a specific perspective.
-
-#### ❌ Bad Prompt Examples
-- "Check my code."
-
-#### ✅ Good Prompt Examples
-- "Act as a security expert. Review the Flask app for common security issues and suggest improvements."
-
-#### Demo (on `feature/role-play-prompting` branch)
-- **Task:** Security review.
-- **Prompt:**  
-  *"Act as a security expert. Review the Flask app for vulnerabilities such as XSS, CSRF, and insecure secrets. Suggest code changes to improve security."*
-
-#### Reflective Questions
-- How does role-play change Copilot’s output?
-- What if you ask Copilot to act as a beginner?
-- How would you combine role-play with other techniques?
-
-#### Learn More
-- [Role Prompting](https://platform.openai.com/docs/guides/prompt-engineering/strategies#role-prompting)
-
----
 
 ## Workshop Wrap-Up
 
@@ -310,6 +318,3 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 - Explore the “Learn More” links for deeper mastery.
 
 ---
-
-**Happy Prompting!**  
-*Branch after each segment: `feature/<technique>`*
