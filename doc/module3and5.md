@@ -260,7 +260,7 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 #### ✅ Good Prompt Examples
 - "Act as a security expert. Review the Flask app for common security issues and suggest improvements."
 
-#### Demo (on `feature/role-play-prompting` branch)
+#### Demo (on `module-5-prompting` branch)
 - **Task:** Security review.
 - **Prompt:**  
   *"@workspace Act as a security expert. Review the Flask app for vulnerabilities such as XSS, CSRF, insecure secrets, and OWASP 10. Suggest code changes to improve security."*
@@ -285,7 +285,7 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 #### ✅ Good Prompt Examples
 - "Update the dashboard.html and style.css to make the task list more visually appealing. Add a hover effect to each task item and improve the color scheme."
 
-#### Demo (on `feature/multimodal-prompting` branch)
+#### Demo (on `module-5-prompting` branch)
 - **Task:** Improve UI.
 - **Prompt:**  
   *"Update dashboard.html and style.css to add a hover effect to each task item and use a modern color palette."*
@@ -318,6 +318,3 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 - Explore the “Learn More” links for deeper mastery.
 
 ---
-
-**Happy Prompting!**  
-*Branch after each segment: `feature/<technique>`*
