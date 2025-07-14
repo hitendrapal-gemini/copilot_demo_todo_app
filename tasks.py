@@ -7,7 +7,8 @@ from user import User, users
 
 tasks = Blueprint('tasks', __name__)
 
-TASK_DICT = {'Items': []}  # Placeholder for task list, not used in this version
+TASK_DICT = {'Items': []}
+ALL_TAGS = set()  # Store all tags for auto-suggestion
 
 
 
@@ -35,8 +36,7 @@ def logout():
 @tasks.route('/')
 @login_required
 def home():
-    # Fetch tasks from DynamoDB
-    global TASK_DICT
+    global TASK_DICT, ALL_TAGS
     tasks_data = TASK_DICT.get('Items', [])
     search_query = request.args.get('search', '').strip()
     if search_query:
@@ -44,14 +44,17 @@ def home():
             task for task in tasks_data
             if search_query.lower() in task['task_name'].lower()
         ]
-    return render_template('dashboard.html', tasks=tasks_data, search=search_query, user=current_user)
+    # Collect all tags for auto-suggestion
+    ALL_TAGS = set(tag for task in TASK_DICT['Items'] for tag in task.get('tags', []))
+    return render_template('dashboard.html', tasks=tasks_data, search=search_query, user=current_user, all_tags=list(ALL_TAGS))
 
 
 @tasks.route('/add', methods=['POST'])
 def add_task():
-    global TASK_DICT
+    global TASK_DICT, ALL_TAGS
     task_name = request.form.get('task_name')
-    due_date = request.form.get('due_date')  # Get due date from form
+    due_date = request.form.get('due_date')
+    tags = request.form.getlist('tags')  # Get tags as list
 
     # Validate due date: must be today or in the future
     if due_date:
@@ -70,9 +73,11 @@ def add_task():
         TASK_DICT['Items'].append({
             'task_id': task_id,
             'task_name': task_name,
-            'due_date': due_date,  # Store due date
+            'due_date': due_date,
             'completed': False,
+            'tags': tags,
         })
+        ALL_TAGS.update(tags)
         flash('Task added successfully!', 'success')
     return redirect(url_for('tasks.home'))
 
@@ -108,8 +113,7 @@ def delete_task(task_id):
 
 @tasks.route('/edit/<task_id>', methods=['GET', 'POST'])
 def edit_task(task_id):
-    global TASK_DICT
-    # Find the task to edit
+    global TASK_DICT, ALL_TAGS
     task_to_edit = None
     for task in TASK_DICT['Items']:
         if task['task_id'] == task_id:
@@ -123,6 +127,7 @@ def edit_task(task_id):
     if request.method == 'POST':
         new_name = request.form.get('task_name')
         new_due_date = request.form.get('due_date')
+        new_tags = request.form.getlist('tags')
 
         # Validate due date: must be today or in the future
         if new_due_date:
@@ -139,8 +144,11 @@ def edit_task(task_id):
         if new_name:
             task_to_edit['task_name'] = new_name
         task_to_edit['due_date'] = new_due_date
+        task_to_edit['tags'] = new_tags
+        ALL_TAGS.update(new_tags)
         flash('Task updated successfully!', 'success')
         return redirect(url_for('tasks.home'))
 
     # GET request: render edit form
-    return render_template('edit_task.html', task=task_to_edit)
+    ALL_TAGS = set(tag for task in TASK_DICT['Items'] for tag in task.get('tags', []))
+    return render_template('edit_task.html', task=task_to_edit, all_tags=list(ALL_TAGS))

@@ -16,3 +16,5 @@ def generate_task_id(task_dict):
             except ValueError:
                 continue
     return f"TASK-{max_id + 1}"
+
+# No changes required for tags feature.

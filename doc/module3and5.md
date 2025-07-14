@@ -200,16 +200,16 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 - "Add user authentication."
 
 #### ✅ Good Prompt Examples
-- "Add user authentication to the Flask app:
+- "#codebase Add user authentication to the Flask app:
   - Use Flask-Login.
   - Add login and logout routes.
   - Protect the dashboard so only logged-in users can access it.
   - Show the logged-in user’s name in the navbar."
 
-#### Demo (on `feature/mega-prompt` branch)
+#### Demo (on `module-5-prompting` branch)
 - **Task:** Add authentication.
 - **Prompt:**  
-  *"Add user authentication using Flask-Login. Implement login/logout routes, protect the dashboard, and display the user’s name in the navbar."*
+  *" #codebase Add user authentication using Flask-Login. Implement login/logout routes, protect the dashboard, and display the user’s name in the navbar."*
 
 #### Reflective Questions
 - What are the risks of very long prompts?
@@ -226,15 +226,20 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 **detail**: Adaptive prompting is an iterative process where you review Copilot’s output, identify gaps or errors, and adjust your prompt to improve results. You can also ask Copilot to critique or refine its own suggestions, leading to higher-quality code through self-refinement.
 
 #### ❌ Bad Prompt Examples
-- "Fix the bug."
+- "Add "Tags" feature for each todo item, users should be able to assign multiple tags."
 
 #### ✅ Good Prompt Examples
-- "The delete button sometimes doesn’t work. First, explain what might be wrong. Then, suggest a fix and explain your reasoning."
+- "Add "Tags" feature for each todo item. Users should be able to assign multiple tags to a single todo. How should I approach this?"
 
-#### Demo (on `feature/adaptive-prompting` branch)
-- **Task:** Debug the delete button.
-- **Prompt:**  
-  *"The delete button on the dashboard sometimes fails. First, explain possible causes. Then, suggest a fix and explain your reasoning."*
+#### Demo (on `module-5-prompting` branch)
+- **Task:** Add "Tags" feature for each todo item.
+- **Ask Initial Prompt:**  
+"@workspace Add "Tags" feature for each todo item. Users should be able to assign multiple tags to a single todo. How should I approach this?"
+- **Refine Prompt:**
+"When adding/editing a todo, what's the best way for users to input multiple tags? Should it be a text input with auto-suggestion, checkboxes, or a multi-select dropdown?"
+- **Edit Final Prompt:**
+"#codebase Add "Tags" feature for each todo item. Users should be able to assign multiple tags to a single todo. Use a multi-select dropdown with auto-suggestion (e.g., Select2 or Bootstrap Tags Input)"
+
 
 #### Reflective Questions
 - How do you adapt your prompt after seeing Copilot’s output?

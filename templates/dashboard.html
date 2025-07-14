@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List - Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <style>
+        .bootstrap-tagsinput { width: 100%; }
+        .tag-label { background: #e0e0e0; border-radius: 3px; padding: 2px 6px; margin-right: 2px; font-size: 0.9em; }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
@@ -43,6 +48,12 @@
         <form action="{{ url_for('tasks.add_task') }}" method="POST" class="add-task-form">
             <input type="text" name="task_name" placeholder="Enter a new task" required>
             <input type="date" name="due_date" placeholder="Due date">
+            <input type="text" name="tags" data-role="tagsinput" placeholder="Add tags" value="" list="all-tags">
+            <datalist id="all-tags">
+                {% for tag in all_tags %}
+                    <option value="{{ tag }}">
+                {% endfor %}
+            </datalist>
             <button type="submit">Add Task</button>
         </form>
 
@@ -50,7 +61,19 @@
         <ul class="task-list">
             {% for task in tasks %}
                 <li class="task-item {% if task['completed'] %}completed{% endif %}">
-                    <span>{{ task['task_name'] }}{% if task['due_date'] %} <small style="color: #888;">(Due: {{ task['due_date'] }})</small>{% endif %}</span>
+                    <span>
+                        {{ task['task_name'] }}
+                        {% if task['due_date'] %}
+                            <small style="color: #888;">(Due: {{ task['due_date'] }})</small>
+                        {% endif %}
+                        {% if task['tags'] %}
+                            <span>
+                                {% for tag in task['tags'] %}
+                                    <span class="tag-label">{{ tag }}</span>
+                                {% endfor %}
+                            </span>
+                        {% endif %}
+                    </span>
                     
                     <!-- Mark as complete -->
                     {% if not task['completed'] %}
@@ -72,5 +95,6 @@
             {% endfor %}
         </ul>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 </body>
 </html>
