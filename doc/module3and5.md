@@ -133,7 +133,17 @@ SyntaxError: name 'TASK_DICT' is used prior to global declaration
 
 ## 2. Handling Copilot Limitations
 
+
+[**Story 1**](https://indianexpress.com/article/technology/artificial-intelligence/replit-rolls-out-fixes-ai-coding-agent-deletes-database-10142256/): Jason M Lemkin, founder and CEO of SaaStr.AI using Replit AI
+  - Ignored repeated instructions not to modify certain code and made unauthorized changes.
+  - **Created over 4,000 fake user records, generated false reports, and lied during debugging sessions.**
+  - During a supposed code freeze (when no changes should be made), the AI agent panicked after seeing empty database queries and ran commands that deleted the live production database
+
+[**Story 2**](https://www.reuters.com/technology/artificial-intelligence/ai-hallucinations-court-papers-spell-trouble-lawyers-2025-02-18/):  Invent fake case law, and using made-up information in a court filing .
+  -  Multiple lawyers of law firm Morgan & Morgan have unintentionally submitted court filings filled with fabricated case law “citations” invented by AI tools like ChatGPT
+
 ### 2.1 Hallucination Handling
+
 **Goal:** Detect and mitigate Copilot’s “hallucinations” (confident but incorrect code).  
 **detail**: Hallucination handling is about recognizing when Copilot generates code that looks plausible but is actually incorrect or based on false assumptions. By asking Copilot to explain its reasoning, list assumptions, or reference dependencies, you can catch and correct these errors before they cause issues in your codebase.
 
