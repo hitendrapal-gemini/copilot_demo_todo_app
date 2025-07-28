@@ -57,7 +57,7 @@
     *"Ensure that the due date selected for a new task cannot be in the past. Only allow today or future dates in the add task form."*
 - **Task 2:** Allow users to edit tasks.
   - **Prompt:**  
-    *"Add a feature to allow users to edit the name and due date of an existing todo item directly from the dashboard."*
+    *"Add a feature to allow users to edit the name and due date of an existing todo item directly from the dashboard. The edit button should have green color"*
   - **Improved Prompt:**  
     *"Add a feature to allow users to edit the name and due date of an existing todo item directly from the dashboard. Style the Edit button with a yellow background color, similar to how the Complete button is blue and the Delete button is red."*
 

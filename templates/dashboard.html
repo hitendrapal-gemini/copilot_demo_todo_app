@@ -32,33 +32,99 @@
         <!-- Add Task Form -->
         <form action="{{ url_for('tasks.add_task') }}" method="POST" class="add-task-form">
             <input type="text" name="task_name" placeholder="Enter a new task" required>
-            <input type="date" name="due_date" required>
+            <input type="date" name="due_date" id="due_date" required>
             <button type="submit">Add Task</button>
         </form>
+        <script>
+            // Set minimum date to today for due_date input
+            document.addEventListener('DOMContentLoaded', function() {
+                var today = new Date();
+                var yyyy = today.getFullYear();
+                var mm = String(today.getMonth() + 1).padStart(2, '0');
+                var dd = String(today.getDate()).padStart(2, '0');
+                var minDate = yyyy + '-' + mm + '-' + dd;
+                document.getElementById('due_date').setAttribute('min', minDate);
+            });
+        </script>
 
         <!-- Task List -->
         <ul class="task-list">
             {% for task in tasks %}
                 <li class="task-item {% if task['completed'] %}completed{% endif %}">
-                    <span>{{ task['task_name'] }}</span>
-                    {% if task['due_date'] %}
-                        <span style="margin-left: 15px; color: #888; font-size: 0.95em;">Due: {{ task['due_date'] }}</span>
-                    {% endif %}
-                    <!-- Mark as complete -->
-                    {% if not task['completed'] %}
-                        <form action="{{ url_for('tasks.complete_task', task_id=task['task_id']) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="complete-btn">Complete</button>
+                    {% if edit_task and edit_task['task_id'] == task['task_id'] %}
+                        <form action="{{ url_for('tasks.edit_task', task_id=task['task_id']) }}" method="POST" class="edit-task-form" style="display:inline; width:100%;">
+                            <input type="text" name="task_name" value="{{ task['task_name'] }}" required style="width: 30%;">
+                            <input type="date" name="due_date" value="{{ task['due_date'] }}" required style="width: 25%;">
+                            <button type="submit" class="save-btn">Save</button>
+                            <a href="{{ url_for('tasks.home') }}" class="cancel-edit-btn">Cancel</a>
                         </form>
                     {% else %}
-                        <span>(Completed)</span>
+                        <span>{{ task['task_name'] }}</span>
+                        {% if task['due_date'] %}
+                            <span style="margin-left: 15px; color: #888; font-size: 0.95em;">Due: {{ task['due_date'] }}</span>
+                        {% endif %}
+                        <!-- Mark as complete -->
+                        {% if not task['completed'] %}
+                            <form action="{{ url_for('tasks.complete_task', task_id=task['task_id']) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="complete-btn">Complete</button>
+                            </form>
+                        {% else %}
+                            <span>(Completed)</span>
+                        {% endif %}
+                        <!-- Delete task -->
+                        <form action="{{ url_for('tasks.delete_task', task_id=task['task_id']) }}" method="POST" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+                        <!-- Edit task -->
+                        {% if not task['completed'] %}
+                            <form action="{{ url_for('tasks.edit_task', task_id=task['task_id']) }}" method="GET" style="display:inline;">
+                                <button type="submit" class="edit-btn">Edit</button>
+                            </form>
+                        {% endif %}
                     {% endif %}
-                    <!-- Delete task -->
-                    <form action="{{ url_for('tasks.delete_task', task_id=task['task_id']) }}" method="POST" style="display:inline;">
-                        <button type="submit">Delete</button>
-                    </form>
                 </li>
             {% endfor %}
         </ul>
     </div>
+
+    <style>
+    .edit-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin-left: 8px;
+        cursor: pointer;
+    }
+    .edit-btn:hover {
+        background-color: #388e3c;
+    }
+    .edit-task-form input[type="text"], .edit-task-form input[type="date"] {
+        padding: 5px;
+        margin-right: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .save-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+    .save-btn:hover {
+        background-color: #388e3c;
+    }
+    .cancel-edit-btn {
+        background: none;
+        color: #888;
+        text-decoration: underline;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+    </style>
 </body>
 </html>
