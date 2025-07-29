@@ -8,6 +8,12 @@
 <body>
     <div class="navbar">
         Edit Task
+        <span style="float:right; font-size:16px;">
+            {% if current_user.is_authenticated %}
+                Logged in as {{ current_user.name }} |
+                <a href="{{ url_for('auth.logout') }}" style="color:white; text-decoration:underline;">Logout</a>
+            {% endif %}
+        </span>
     </div>
     <div class="container">
         <h2>Edit Task</h2>

@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect, url_for, render_template, flash
 from utils import generate_task_id  # Assuming this function is defined in utils.py
 from config import Config
 from datetime import datetime
+from flask_login import login_required, current_user
 
 tasks = Blueprint('tasks', __name__)
 
@@ -10,14 +11,22 @@ TASK_DICT = {'Items': []}  # Placeholder for task list, not used in this version
 
 
 @tasks.route('/')
+@login_required
 def home():
     # Fetch tasks from DynamoDB
     global TASK_DICT
     tasks_data = TASK_DICT.get('Items', [])
-    return render_template('dashboard.html', tasks=tasks_data)
+    search_query = request.args.get('q', '').strip()
+    if search_query:
+        tasks_data = [
+            task for task in tasks_data
+            if search_query.lower() in task.get('task_name', '').lower()
+        ]
+    return render_template('dashboard.html', tasks=tasks_data, current_user=current_user)
 
 
 @tasks.route('/add', methods=['POST'])
+@login_required
 def add_task():
     global TASK_DICT
     task_name = request.form.get('task_name')
@@ -47,6 +56,7 @@ def add_task():
     return redirect(url_for('tasks.home'))
 
 @tasks.route('/complete/<task_id>', methods=['POST'])
+@login_required
 def complete_task(task_id):
 
     # update the task in TASK_DICT to mark it as completed
@@ -68,6 +78,7 @@ def complete_task(task_id):
     return redirect(url_for('tasks.home'))
 
 @tasks.route('/delete/<task_id>', methods=['POST'])
+@login_required
 def delete_task(task_id):
 
     global TASK_DICT
@@ -77,6 +88,7 @@ def delete_task(task_id):
     return redirect(url_for('tasks.home'))
 
 @tasks.route('/edit/<task_id>', methods=['GET', 'POST'])
+@login_required
 def edit_task(task_id):
     global TASK_DICT
     # Find the task to edit
@@ -113,4 +125,4 @@ def edit_task(task_id):
         return redirect(url_for('tasks.home'))
 
     # GET request: render edit form
-    return render_template('edit_task.html', task=task_to_edit)
+    return render_template('edit_task.html', task=task_to_edit, current_user=current_user)
