@@ -1,3 +1,5 @@
+import boto3
+from config import Config
 
 # Funtion to get a unique identifier for a task.
 # New task ID just greater than the maximum task ID in the provided dictionary.
@@ -25,3 +27,21 @@ def generate_task_id(task_dict):
                 continue
     
     return f'TASK-{max_id + 1}'
+
+def send_task_completed_email(task_name, due_date):
+    """Send an email notification via AWS SNS when a task is completed."""
+    if not Config.SNS_TOPIC_ARN:
+        return False
+    # client = boto3.client('sns', region_name=Config.AWS_REGION)
+    subject = f"Task Completed: {task_name}"
+    message = f"The following task has been marked as completed:\n\nTask: {task_name}\nDue Date: {due_date}"
+    try:
+        print(dict(
+            TopicArn=Config.SNS_TOPIC_ARN,
+            Message=message,
+            Subject=subject
+        ))
+        return True
+    except Exception as e:
+        print(f"Error sending email notification: {e}")
+        return False

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash
-from utils import generate_task_id  # Assuming this function is defined in utils.py
+from utils import generate_task_id, send_task_completed_email  # Import email utility
 from config import Config
 
 tasks = Blueprint('tasks', __name__)
@@ -43,8 +43,10 @@ def complete_task(task_id):
             task_data = task
             break
     
+    # Send email notification if task found
     if task_data:
         task_description = task_data['task_name']
+        send_task_completed_email(task_data['task_name'], task_data['due_date'])
         flash(f'Task {task_description} marked as completed and email notification sent', 'success')
     else:
         flash('Task not found', 'danger')
