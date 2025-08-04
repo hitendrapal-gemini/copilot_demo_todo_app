@@ -16,6 +16,12 @@
     <div class="container">
         <h1>Your Tasks</h1>
 
+        <!-- Search Form -->
+        <form action="{{ url_for('tasks.home') }}" method="GET" class="search-form" style="margin-bottom: 1em;">
+            <input type="text" name="q" placeholder="Search tasks..." value="{{ request.args.get('q', '') }}">
+            <button type="submit">Search</button>
+        </form>
+
         <!-- Flash messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

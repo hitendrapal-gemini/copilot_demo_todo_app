@@ -62,6 +62,12 @@ task_db = TaskDb()
 @tasks.route('/')
 def home():
     tasks_data = task_db.list()
+    search_query = request.args.get('q', '').strip().lower()
+    if search_query:
+        tasks_data = [
+            t for t in tasks_data
+            if search_query in t.get('task_name', '').lower()
+        ]
     return render_template('dashboard.html', tasks=tasks_data)
 
 @tasks.route('/add', methods=['POST'])
