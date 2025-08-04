@@ -1,6 +1,7 @@
 import json
 import os
 from flask import Blueprint, request, redirect, url_for, render_template, flash
+from flask_login import login_required, current_user
 from utils import generate_task_id  # Assuming this function is defined in utils.py
 from utils import send_email_notification  # Assumed to be implemented for email sending
 from config import Config
@@ -60,6 +61,7 @@ tasks = Blueprint('tasks', __name__)
 task_db = TaskDb()
 
 @tasks.route('/')
+@login_required
 def home():
     tasks_data = task_db.list()
     search_query = request.args.get('q', '').strip().lower()
@@ -68,7 +70,7 @@ def home():
             t for t in tasks_data
             if search_query in t.get('task_name', '').lower()
         ]
-    return render_template('dashboard.html', tasks=tasks_data)
+    return render_template('dashboard.html', tasks=tasks_data, current_user=current_user)
 
 @tasks.route('/add', methods=['POST'])
 def add_task():
