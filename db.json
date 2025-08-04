@@ -4,6 +4,12 @@
       "task_id": "c442fc3c-17c8-4359-8453-0f921030e7af",
       "task_name": "My first Task",
       "completed": true
+    },
+    {
+      "task_id": "1daea1f0-f9a8-4da0-a891-60acde67ef64",
+      "task_name": "My 2nd task",
+      "completed": false,
+      "due_date": "2025-08-03"
     }
   ]
 }
