@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>Edit Task</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Tags Input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <style>
+        .bootstrap-tagsinput {
+            width: 100%;
+            min-height: 38px;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -15,10 +25,15 @@
         <form method="POST">
             <input type="text" name="task_name" value="{{ task['task_name'] }}" required>
             <input type="date" name="due_date" value="{{ task['due_date'] }}" required id="edit-due-date-input">
+            <input type="text" name="tags" data-role="tagsinput" placeholder="Add tags (comma separated)" value="{{ ','.join(task['tags']) if task['tags'] else '' }}">
             <button type="submit" class="edit-btn">Save Changes</button>
             <a href="{{ url_for('tasks.home') }}"><button type="button">Cancel</button></a>
         </form>
     </div>
+    <!-- Bootstrap JS and Bootstrap Tags Input JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     <script>
         // Set the min date for due date input to today
         document.addEventListener('DOMContentLoaded', function() {

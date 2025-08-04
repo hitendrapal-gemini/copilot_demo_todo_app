@@ -22,6 +22,45 @@
       "task_name": "My 4th task",
       "completed": false,
       "due_date": "2025-08-06"
+    },
+    {
+      "task_id": "TASK-2",
+      "task_name": "Learn Prompt techniques",
+      "completed": false,
+      "due_date": "2025-08-06",
+      "tags": [
+        "learning"
+      ]
+    },
+    {
+      "task_id": "TASK-3",
+      "task_name": "learn copilot agent",
+      "completed": false,
+      "due_date": "2025-08-06",
+      "tags": [
+        "learning"
+      ]
+    },
+    {
+      "task_id": "TASK-4",
+      "task_name": "connect with tarinder",
+      "completed": false,
+      "due_date": "2025-08-04",
+      "tags": [
+        "learning",
+        "work"
+      ]
+    },
+    {
+      "task_id": "TASK-5",
+      "task_name": "Explore code refactor",
+      "completed": false,
+      "due_date": "2025-08-08",
+      "tags": [
+        "learning",
+        "personal",
+        "legacy"
+      ]
     }
   ]
 }

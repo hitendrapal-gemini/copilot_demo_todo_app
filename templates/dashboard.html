@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List - Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Tags Input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <style>
+        .bootstrap-tagsinput {
+            width: 100%;
+            min-height: 38px;
+        }
+        .tag-label {
+            background: #007bff;
+            color: #fff;
+            border-radius: 3px;
+            padding: 2px 6px;
+            margin-right: 2px;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
@@ -40,6 +59,7 @@
         <form action="{{ url_for('tasks.add_task') }}" method="POST" class="add-task-form">
             <input type="text" name="task_name" placeholder="Enter a new task" required>
             <input type="date" name="due_date" required id="due-date-input">
+            <input type="text" name="tags" data-role="tagsinput" placeholder="Add tags (comma separated)">
             <button type="submit">Add Task</button>
         </form>
 
@@ -50,6 +70,13 @@
                     <span>{{ task['task_name'] }}</span>
                     {% if task['due_date'] %}
                         <span class="due-date"> (Due: {{ task['due_date'] }})</span>
+                    {% endif %}
+                    {% if task['tags'] %}
+                        <span>
+                            {% for tag in task['tags'] %}
+                                <span class="tag-label">{{ tag }}</span>
+                            {% endfor %}
+                        </span>
                     {% endif %}
                     <!-- Mark as complete -->
                     {% if not task['completed'] %}
@@ -71,6 +98,10 @@
             {% endfor %}
         </ul>
     </div>
+    <!-- Bootstrap JS and Bootstrap Tags Input JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     <script>
         // Set the min date for due date input to today
         document.addEventListener('DOMContentLoaded', function() {

@@ -69,6 +69,7 @@ def home():
         tasks_data = [
             t for t in tasks_data
             if search_query in t.get('task_name', '').lower()
+            or any(search_query in tag.lower() for tag in t.get('tags', []))
         ]
     return render_template('dashboard.html', tasks=tasks_data, current_user=current_user)
 
@@ -76,6 +77,8 @@ def home():
 def add_task():
     task_name = request.form.get('task_name')
     due_date = request.form.get('due_date')
+    tags_raw = request.form.get('tags', '')
+    tags = [t.strip() for t in tags_raw.split(',') if t.strip()]
     if task_name:
         # Pass the current task dictionary to generate_task_id
         current_tasks = {"Items": task_db.list()}
@@ -85,6 +88,7 @@ def add_task():
             'task_name': task_name,
             'completed': False,
             'due_date': due_date,
+            'tags': tags,
         }
         task_db.save(task)
         flash('Task added successfully!', 'success')
@@ -127,8 +131,10 @@ def edit_task(task_id):
     if request.method == 'POST':
         new_name = request.form.get('task_name')
         new_due_date = request.form.get('due_date')
+        tags_raw = request.form.get('tags', '')
+        tags = [t.strip() for t in tags_raw.split(',') if t.strip()]
         if new_name:
-            task_db.update(task_id, {'task_name': new_name, 'due_date': new_due_date})
+            task_db.update(task_id, {'task_name': new_name, 'due_date': new_due_date, 'tags': tags})
             flash('Task updated successfully!', 'success')
             return redirect(url_for('tasks.home'))
     return render_template('edit_task.html', task=task)
