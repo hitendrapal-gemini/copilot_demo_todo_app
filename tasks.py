@@ -95,3 +95,18 @@ def delete_task(task_id):
     task_db.delete(task_id)
     flash('Task deleted successfully!', 'danger')
     return redirect(url_for('tasks.home'))
+
+@tasks.route('/edit/<task_id>', methods=['GET', 'POST'])
+def edit_task(task_id):
+    task = task_db.get(task_id)
+    if not task:
+        flash('Task not found', 'danger')
+        return redirect(url_for('tasks.home'))
+    if request.method == 'POST':
+        new_name = request.form.get('task_name')
+        new_due_date = request.form.get('due_date')
+        if new_name:
+            task_db.update(task_id, {'task_name': new_name, 'due_date': new_due_date})
+            flash('Task updated successfully!', 'success')
+            return redirect(url_for('tasks.home'))
+    return render_template('edit_task.html', task=task)

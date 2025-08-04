@@ -7,9 +7,15 @@
     },
     {
       "task_id": "1daea1f0-f9a8-4da0-a891-60acde67ef64",
-      "task_name": "My 2nd task",
+      "task_name": "My 2nd task edited",
       "completed": false,
-      "due_date": "2025-08-03"
+      "due_date": "2025-08-07"
+    },
+    {
+      "task_id": "c38c7fe6-6e39-471a-8ba9-2ed40c029921",
+      "task_name": "My 3rd task",
+      "completed": false,
+      "due_date": "2025-08-07"
     }
   ]
 }

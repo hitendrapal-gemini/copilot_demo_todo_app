@@ -32,7 +32,7 @@
         <!-- Add Task Form -->
         <form action="{{ url_for('tasks.add_task') }}" method="POST" class="add-task-form">
             <input type="text" name="task_name" placeholder="Enter a new task" required>
-            <input type="date" name="due_date" required>
+            <input type="date" name="due_date" required id="due-date-input">
             <button type="submit">Add Task</button>
         </form>
 
@@ -52,6 +52,10 @@
                     {% else %}
                         <span>(Completed)</span>
                     {% endif %}
+                    <!-- Edit task -->
+                    <a href="{{ url_for('tasks.edit_task', task_id=task['task_id']) }}">
+                        <button type="button" class="edit-btn">Edit</button>
+                    </a>
                     <!-- Delete task -->
                     <form action="{{ url_for('tasks.delete_task', task_id=task['task_id']) }}" method="POST" style="display:inline;">
                         <button type="submit">Delete</button>
@@ -60,5 +64,16 @@
             {% endfor %}
         </ul>
     </div>
+    <script>
+        // Set the min date for due date input to today
+        document.addEventListener('DOMContentLoaded', function() {
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            var minDate = yyyy + '-' + mm + '-' + dd;
+            document.getElementById('due-date-input').setAttribute('min', minDate);
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        Edit Task
+    </div>
+    <div class="container">
+        <h2>Edit Task</h2>
+        <form method="POST">
+            <input type="text" name="task_name" value="{{ task['task_name'] }}" required>
+            <input type="date" name="due_date" value="{{ task['due_date'] }}" required id="edit-due-date-input">
+            <button type="submit" class="edit-btn">Save Changes</button>
+            <a href="{{ url_for('tasks.home') }}"><button type="button">Cancel</button></a>
+        </form>
+    </div>
+    <script>
+        // Set the min date for due date input to today
+        document.addEventListener('DOMContentLoaded', function() {
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            var minDate = yyyy + '-' + mm + '-' + dd;
+            document.getElementById('edit-due-date-input').setAttribute('min', minDate);
+        });
+    </script>
+</body>
+</html>
