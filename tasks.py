@@ -68,7 +68,9 @@ def add_task():
     task_name = request.form.get('task_name')
     due_date = request.form.get('due_date')
     if task_name:
-        task_id = generate_task_id()
+        # Pass the current task dictionary to generate_task_id
+        current_tasks = {"Items": task_db.list()}
+        task_id = generate_task_id(current_tasks)
         task = {
             'task_id': task_id,
             'task_name': task_name,
