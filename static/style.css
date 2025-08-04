@@ -133,3 +133,25 @@ body {
     background-color: #f44336;
     color: white;
 }
+
+/* Priority label styling */
+.priority-label {
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-size: 0.95em;
+    display: inline-block;
+}
+.priority-low {
+    background-color: #28a745;
+    color: #fff;
+}
+.priority-medium {
+    background-color: #ffc107;
+    color: #212529;
+}
+.priority-high {
+    background-color: #dc3545;
+    color: #fff;
+}

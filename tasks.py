@@ -79,6 +79,7 @@ def add_task():
     due_date = request.form.get('due_date')
     tags_raw = request.form.get('tags', '')
     tags = [t.strip() for t in tags_raw.split(',') if t.strip()]
+    priority = request.form.get('priority', 'Low')
     if task_name:
         # Pass the current task dictionary to generate_task_id
         current_tasks = {"Items": task_db.list()}
@@ -89,6 +90,7 @@ def add_task():
             'completed': False,
             'due_date': due_date,
             'tags': tags,
+            'priority': priority,
         }
         task_db.save(task)
         flash('Task added successfully!', 'success')
@@ -133,8 +135,9 @@ def edit_task(task_id):
         new_due_date = request.form.get('due_date')
         tags_raw = request.form.get('tags', '')
         tags = [t.strip() for t in tags_raw.split(',') if t.strip()]
+        priority = request.form.get('priority', 'Low')
         if new_name:
-            task_db.update(task_id, {'task_name': new_name, 'due_date': new_due_date, 'tags': tags})
+            task_db.update(task_id, {'task_name': new_name, 'due_date': new_due_date, 'tags': tags, 'priority': priority})
             flash('Task updated successfully!', 'success')
             return redirect(url_for('tasks.home'))
     return render_template('edit_task.html', task=task)
