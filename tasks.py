@@ -2,6 +2,7 @@ import json
 import os
 from flask import Blueprint, request, redirect, url_for, render_template, flash
 from utils import generate_task_id  # Assuming this function is defined in utils.py
+from utils import send_email_notification  # Assumed to be implemented for email sending
 from config import Config
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'db.json')
@@ -87,7 +88,18 @@ def complete_task(task_id):
     task_data = task_db.get(task_id)
     if updated and task_data:
         task_description = task_data['task_name']
-        flash(f'Task {task_description} marked as completed and email notification sent', 'success')
+        # Send email notification
+        try:
+            to_email = getattr(Config, 'ADMIN_EMAIL', None)
+            if to_email:
+                subject = f"Task Completed: {task_description}"
+                body = f"The task '{task_description}' has been marked as completed."
+                send_email_notification(to_email, subject, body)
+                flash(f'Task {task_description} marked as completed and email notification sent', 'success')
+            else:
+                flash(f'Task {task_description} marked as completed, but ADMIN_EMAIL not configured', 'warning')
+        except Exception as e:
+            flash(f'Task {task_description} marked as completed, but failed to send email: {e}', 'warning')
     else:
         flash('Task not found', 'danger')
     return redirect(url_for('tasks.home'))
