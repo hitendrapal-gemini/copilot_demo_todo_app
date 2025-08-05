@@ -22,6 +22,17 @@
     - Update style.css to style the priority labels and make them stand out."*
 
 
+#### ❌ Bad Prompt Examples
+- "Make the UI look better."
+
+#### ✅ Good Prompt Examples
+- "Update the dashboard.html and style.css to make the task list more visually appealing. Add a hover effect to each task item and improve the color scheme."
+
+#### Demo (on `module-5-prompting` branch)
+- **Task:** Improve UI.
+- **Prompt:**  
+  *"Update dashboard.html and style.css to add a hover effect to each task item and use a modern color palette."*
+
 #### Reflective Questions
 - How does including both code and UI context help Copilot?
 - What if you only update one file?
