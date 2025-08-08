@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Course: Prompting Techniques</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* A slightly off-white for comfort */
+        }
+        /* Custom scrollbar for a sleeker look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #2dd4bf; /* teal-400 */
+            border-radius: 10px;
+            border: 2px solid #f1f5f9;
+        }
+        .technique-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .technique-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background-color: #4b5563;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Container -->
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-white shadow-lg p-6 sticky top-0 h-screen overflow-y-auto hidden lg:block">
+            <div class="mb-8">
+                <img src="gemini_logo.png" alt="Brand Logo" class="h-10 w-auto">
+            </div>
+            <nav id="nav-menu">
+                <ul class="space-y-2">
+                    <!-- Nav items will be dynamically inserted here -->
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 md:p-10">
+            <header class="mb-12 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-cyan-500">Mastering Prompting Techniques</h1>
+                <p class="text-lg text-gray-500 max-w-3xl mx-auto">An interactive guide for Software Developers to enhance code generation with powerful prompting strategies.</p>
+            </header>
+
+            <div id="content-sections" class="space-y-16">
+                <!-- Sections will be dynamically generated here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const techniques = [
+            { id: 'zero-shot', title: 'Zero-Shot Prompting', color: 'bg-teal-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>` },
+            { id: 'few-shot', title: 'Few-Shot Prompting', color: 'bg-cyan-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg>` },
+            { id: 'cot', title: 'Chain-of-Thought', color: 'bg-emerald-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>` },
+            { id: 'mega-prompt', title: 'Mega Prompt', color: 'bg-teal-50', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>` },
+            { id: 'adaptive', title: 'Adaptive Prompt', color: 'bg-green-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>` },
+            { id: 'roleplay', title: 'Roleplay Prompt', color: 'bg-cyan-50', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>` },
+            { id: 'multimodal', title: 'Multimodal Prompt', color: 'bg-sky-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>` },
+            { id: 'hallucination', title: 'Hallucination Handling', color: 'bg-blue-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>` },
+            { id: 'final-tips', title: 'Final Tips', color: 'bg-indigo-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m5 10v4m-2-2h4M5 3a2 2 0 00-2 2v1m16 0V5a2 2 0 00-2-2h-1m-4 16l2 2 2-2m-4-16l2-2 2 2" /></svg>` },
+            { id: 'summary', title: 'Summary Table', color: 'bg-violet-100', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>` },
+        ];
+
+        const content = {
+            'zero-shot': {
+                purpose: "Use for direct, simple code generation tasks where the model is expected to infer the task from the instruction alone.",
+                promptFormat: `[Instruction]`,
+                examplePrompt: `Write a function in Python to add a new task to a to-do list.`,
+                exampleOutput: `def add_task(todo_list, task):\n    todo_list.append(task)`,
+                bestUse: "When the task is simple, unambiguous, and widely understood.",
+                avoidUse: "When the task is complex, ambiguous, or requires specific style, reasoning, or context.",
+                badPrompt: "Write code for task add.",
+                goodPrompt: "Write a Python function that to add string task to a list called `todo_list`."
+            },
+            'few-shot': {
+                purpose: "Guide the model’s response by providing a few input-output code examples before the main user query.",
+                promptFormat: `User: [Example Input 1]\nAssistant: [Example Output 1]\n\nUser: [Example Input 2]\nAssistant: [Example Output 2]\n\nUser: [Actual Input]\nAssistant:`,
+                examplePrompt: `User: Write a function to delete a task from a to-do list in Python.\nAssistant: def delete_task(todo_list, task):\n    todo_list.remove(task)\n\nUser: Write a function to mark a task as complete in a to-do list (Python).\nAssistant: def complete_task(todo_list, task):\n    if task in todo_list:\n        todo_list[todo_list.index(task)] += ' (done)'\n\nUser: Write a function to list all tasks in a to-do list.\nAssistant:`,
+                exampleOutput: `def list_tasks(todo_list):\n    for task in todo_list:\n        print(task)`,
+                bestUse: "When you want consistent output style or the task may be ambiguous.",
+                avoidUse: "When the task is very simple or when providing examples may bias the output undesirably.",
+                badPrompt: "List tasks.",
+                goodPrompt: "Write a Python function that prints each task in a list called `todo_list`."
+            },
+            'cot': {
+                purpose: "Encourage the model to reason through multi-step code generation or logic for more accurate results.",
+                promptFormat: `Let's think step by step.\n[Task description or scenario]`,
+                examplePrompt: `Let's think step by step.\nI want to create a function that adds a task to a to-do list only if it doesn't already exist. How should I do this in Python?`,
+                exampleOutput: `1. First, check if the task is already in the list.\n2. If not, append the task.\n3. Otherwise, do nothing.\n\nCode:\ndef add_unique_task(todo_list, task):\n    if task not in todo_list:\n        todo_list.append(task)`,
+                bestUse: "When the task requires reasoning, validation, or multi-step logic.",
+                avoidUse: "When the task is straightforward and does not require step-by-step reasoning.",
+                badPrompt: "Add a task if needed.",
+                goodPrompt: "Write a Python function that adds a task to a list only if it is not already present.",
+                flawedPrompt: "Make sure tasks are not repeated.",
+                flawedExplanation: "- No code context or language.\n- No data structure specified.\n- Lacks step-by-step reasoning."
+            },
+            'mega-prompt': {
+                purpose: "Provide extensive context, instructions, and examples for complex or multi-capability code generation tasks.",
+                promptFormat: `You are [role/context].\nThe app allows users to:\n- [Capability 1]\n- [Capability 2]\n[Style/Output guidance]\n\nExample Input: [Sample input]\nExample Output: [Sample output]\n\nUser Input: [Actual input]`,
+                examplePrompt: `You are an expert Python developer.\nThe to-do app allows users to:\n- Add, delete, and complete tasks\n- Set deadlines and priorities\nRespond with clean, well-documented code.\n\nExample Input: Write a function to add a task with a deadline.\nExample Output: def add_task(todo_list, task, deadline):\n    todo_list.append({'task': task, 'deadline': deadline})\n\nUser Input: Write a function to mark a task as high priority.`,
+                exampleOutput: `def mark_high_priority(todo_list, task):\n    for t in todo_list:\n        if t['task'] == task:\n            t['priority'] = 'high'`,
+                bestUse: "For complex, multi-capability code generation or when style/format consistency is required.",
+                avoidUse: "When the task is simple or when brevity and speed are more important than completeness.",
+                badPrompt: "Make a to-do app.",
+                goodPrompt: "Write a Python class for a to-do app with methods to add, delete, and mark tasks as complete.",
+                flawedPrompt: "I want everything for a to-do app.",
+                flawedExplanation: "- Overly broad and unspecific.\n- No language, structure, or features detailed.\n- No examples or style guidance."
+            },
+            'adaptive': {
+                purpose: "Adjust the prompt based on prior user actions or evolving context for dynamic, multi-turn code generation.",
+                promptFormat: `Based on the following completed tasks:\n- [Completed Task 1]\n- [Completed Task 2]\n\nAnd these remaining tasks:\n- [Remaining Task 1] ([Deadline/priority])\n- [Remaining Task 2] ([Deadline/priority])\n\n[Instruction for next action]`,
+                examplePrompt: `Based on the following completed features:\n- Add task function\n- Delete task function\n\nAnd these remaining features:\n- Mark task as complete (high priority)\n- List all tasks (medium priority)\n\nWrite the next function, focusing on the highest priority.`,
+                exampleOutput: `def complete_task(todo_list, task):\n    if task in todo_list:\n        todo_list[todo_list.index(task)] += ' (done)'`,
+                bestUse: "For multi-turn, context-sensitive code generation where requirements evolve.",
+                avoidUse: "When there is no prior context or when a single, isolated task is required.",
+                badPrompt: "Write another function.",
+                goodPrompt: "Based on the completed add and delete functions, write a Python function to mark a task as complete.",
+                flawedPrompt: "Keep going.",
+                flawedExplanation: "- No context or direction.\n- No indication of what has been done or what is needed next."
+            },
+            'roleplay': {
+                purpose: "Assign the model a persona or role to shape the tone, style, or expertise of the code response.",
+                promptFormat: `Act as a [role/persona].\nHere are my tasks:\n- [Task 1]\n- [Task 2]\n[Role-specific instruction]`,
+                examplePrompt: `Act as a senior Python engineer.\nHere are my requirements:\n- Add tasks\n- Delete tasks\n- Mark tasks as complete\nWrite a class that implements these features with docstrings.`,
+                exampleOutput: `class TodoApp:\n    """A simple to-do app."""\n    def __init__(self):\n        self.tasks = []\n    def add_task(self, task):\n        self.tasks.append(task)\n    def delete_task(self, task):\n        self.tasks.remove(task)\n    def complete_task(self, task):\n        if task in self.tasks:\n            self.tasks[self.tasks.index(task)] += ' (done)'`,
+                bestUse: "When a specific communication style, expertise, or persona is needed in code generation.",
+                avoidUse: "When the role or persona is irrelevant to the task or may introduce unnecessary complexity.",
+                badPrompt: "Make a class.",
+                goodPrompt: "Act as a senior Python engineer and write a class for a to-do app with add, delete, and complete methods.",
+                flawedPrompt: "Do it like an expert.",
+                flawedExplanation: "- No details on what \"it\" is.\n- No requirements or context.\n- No language or structure guidance."
+            },
+            'multimodal': {
+                purpose: "Enable the model to process and reason with both text and images for richer, more flexible code generation input.",
+                promptFormat: `You are a code assistant that can process images and text.\nThe user has uploaded an image of handwritten requirements for a to-do app.\n\nInstructions:\n1. Extract the requirements from the image.\n2. Write Python code to implement them.`,
+                examplePrompt: `[Image: Photo of handwritten requirements]`,
+                exampleOutput: `Extracted requirements:\n- Add task\n- Delete task\n- List tasks\n\nPython code:\ndef add_task(todo_list, task):\n    todo_list.append(task)\ndef delete_task(todo_list, task):\n    todo_list.remove(task)\ndef list_tasks(todo_list):\n    for task in todo_list:\n        print(task)`,
+                bestUse: "When combining visual and textual information for code generation.",
+                avoidUse: "When only text input is available or when image processing is not needed for the task.",
+                badPrompt: "Here’s a picture.",
+                goodPrompt: "Here’s a photo of my to-do app requirements. Extract the features and write Python functions for each.",
+                flawedPrompt: "Look at this and code.",
+                flawedExplanation: "- No description of what to extract or code.\n- No language or output format guidance."
+            },
+            'hallucination': {
+                purpose: "Reduce the risk of the model generating plausible but incorrect or fabricated code (hallucinations) by explicitly instructing it to verify, cite, or limit its output to known information.",
+                promptFormat: `[Instruction with verification/citation request]`,
+                examplePrompt: `Write a Python function to add a task to a to-do list. If you are unsure about any part, say "I don't know" or ask for clarification.`,
+                exampleOutput: `def add_task(todo_list, task):\n    todo_list.append(task)\n# If you want to handle duplicates, please specify.`,
+                bestUse: "When accuracy is critical, or when the model may be prone to making up details.",
+                avoidUse: "When the task is straightforward and you want to encourage creative or unconstrained responses.",
+                badPrompt: "Write a function to do something with tasks.",
+                goodPrompt: "Write a Python function to add a task to a list. If you are unsure about any requirement, ask for clarification instead of guessing."
+            },
+            'final-tips': {
+                tips: [
+                    "Start simple (zero-shot), escalate as complexity grows.",
+                    "Be explicit about output format and expectations.",
+                    "Use examples (few-shot/mega) when consistency or style matters.",
+                    "Iterate and test—improve prompts based on observed outputs.",
+                    "Document successful prompts for future reference."
+                ]
+            },
+            'summary': {
+                table: [
+                    { tech: 'Zero-Shot', purpose: 'Direct, simple tasks', format: '"[Instruction]"', bestFor: 'Simple, unambiguous requests' },
+                    { tech: 'Few-Shot', purpose: 'Style/output consistency', format: '"User: ... Assistant: ..."', bestFor: 'Tasks needing format/style mimicry' },
+                    { tech: 'Chain-of-Thought', purpose: 'Reasoning, prioritization', format: '"Let\'s think step by step..."', bestFor: 'Multi-step reasoning' },
+                    { tech: 'Mega Prompt', purpose: 'Complex/multi-capability tasks', format: '"[Role/rules/examples]..."', bestFor: 'Complex, context-rich scenarios' },
+                    { tech: 'Adaptive', purpose: 'Multi-turn interaction', format: '"[Based on completed tasks: ...]"', bestFor: 'Dynamic, evolving conversations' },
+                    { tech: 'Roleplay', purpose: 'Persona-driven engagement', format: '"Act as a [role]..."', bestFor: 'Specialized tone/style' },
+                    { tech: 'Multimodal', purpose: 'Image+text scenarios', format: '"[Instructions] [Image]"', bestFor: 'Combining visual and textual info' },
+                    { tech: 'Hallucination Handling', purpose: 'Reducing incorrect code', format: '"[Instruction with verification]"', bestFor: 'Ensuring accuracy, handling uncertainty' }
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu').querySelector('ul');
+            const contentSections = document.getElementById('content-sections');
+
+            // Generate Nav and Content Sections
+            techniques.forEach((tech, index) => {
+                // Nav Item
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <a href="#${tech.id}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-600 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200">
+                        <span class="text-teal-500">${tech.icon}</span>
+                        <span>${tech.title}</span>
+                    </a>
+                `;
+                navMenu.appendChild(li);
+
+                // Content Section
+                const section = document.createElement('section');
+                section.id = tech.id;
+                section.className = 'technique-section p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200';
+                const data = content[tech.id];
+
+                let contentHTML = `
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 rounded-full ${tech.color} text-teal-600">${tech.icon}</div>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">${tech.title}</h2>
+                    </div>
+                `;
+
+                if (tech.id === 'summary') {
+                    contentHTML += `
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="py-3 px-4 bg-teal-50 font-semibold text-teal-700 rounded-tl-lg">Technique</th>
+                                        <th class="py-3 px-4 bg-teal-50 font-semibold text-teal-700">Purpose</th>
+                                        <th class="py-3 px-4 bg-teal-50 font-semibold text-teal-700">Format Example</th>
+                                        <th class="py-3 px-4 bg-teal-50 font-semibold text-teal-700 rounded-tr-lg">Best For</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.table.map((row, i) => `
+                                        <tr class="border-b border-teal-200">
+                                            <td class="py-3 px-4 font-medium text-gray-700">${row.tech}</td>
+                                            <td class="py-3 px-4 text-gray-600">${row.purpose}</td>
+                                            <td class="py-3 px-4 text-gray-600"><code class="text-sm bg-gray-200 px-1 py-0.5 rounded">${row.format}</code></td>
+                                            <td class="py-3 px-4 text-gray-600">${row.bestFor}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                } else if (tech.id === 'final-tips') {
+                    contentHTML += `
+                        <ul class="space-y-4">
+                            ${data.tips.map(tip => `
+                                <li class="flex items-start gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <span class="text-gray-700 text-lg">${tip}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                } else {
+                     contentHTML += `
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3 text-teal-700">Purpose</h3>
+                                <p class="text-gray-600 leading-relaxed">${data.purpose}</p>
+                            </div>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                ${createCard('Best to use this technique', data.bestUse, 'check')}
+                                ${createCard('Must avoid this technique', data.avoidUse, 'x')}
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3 text-teal-700">Example</h3>
+                                <div class="space-y-4">
+                                    ${createCodeBlock('Prompt', data.examplePrompt)}
+                                    ${createCodeBlock('Output', data.exampleOutput)}
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3 text-teal-700">Showcasing Bad vs. Good</h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                                        <h4 class="font-bold text-red-800 mb-2">Bad Prompt</h4>
+                                        <p class="text-red-700 font-mono text-sm">${data.badPrompt}</p>
+                                    </div>
+                                    <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                                        <h4 class="font-bold text-green-800 mb-2">Good Prompt</h4>
+                                        <p class="text-green-700 font-mono text-sm">${data.goodPrompt}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            ${data.flawedPrompt ? createFlawedPromptSection(data.flawedPrompt, data.flawedExplanation) : ''}
+                        </div>
+                    `;
+                }
+                section.innerHTML = contentHTML;
+                contentSections.appendChild(section);
+            });
+            
+            // Add copy functionality
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const code = button.previousElementSibling.innerText;
+                    navigator.clipboard.writeText(code).then(() => {
+                        button.innerText = 'Copied!';
+                        setTimeout(() => { button.innerText = 'Copy'; }, 2000);
+                    });
+                });
+            });
+
+            // Add reveal functionality for flawed prompts
+            document.querySelectorAll('.reveal-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    targetElement.classList.toggle('hidden');
+                    button.textContent = targetElement.classList.contains('hidden') ? 'Reveal Issues' : 'Hide Issues';
+                });
+            });
+
+            // Scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.technique-section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+
+        function createCard(title, text, iconType) {
+            const icon = iconType === 'check' 
+                ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`
+                : `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>`;
+            const bgColor = iconType === 'check' ? 'bg-green-50' : 'bg-red-50';
+            const borderColor = iconType === 'check' ? 'border-green-200' : 'border-red-200';
+            
+            return `
+                <div class="p-4 rounded-lg border ${borderColor} ${bgColor}">
+                    <div class="flex items-center gap-3 mb-2">
+                        ${icon}
+                        <h4 class="font-semibold text-gray-700">${title}</h4>
+                    </div>
+                    <p class="text-gray-600 text-sm">${text}</p>
+                </div>
+            `;
+        }
+
+        function createCodeBlock(title, code) {
+            return `
+                <div>
+                    <h4 class="font-semibold text-gray-600 mb-2">${title}</h4>
+                    <div class="code-block bg-gray-800 rounded-lg p-4 text-white font-mono text-sm overflow-x-auto">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createFlawedPromptSection(prompt, explanation) {
+            const explanationId = `explanation-${Math.random().toString(36).substr(2, 9)}`;
+            return `
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-teal-700">Debug a Flawed Prompt</h3>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <p class="text-blue-800 font-mono text-sm mb-4">"${prompt}"</p>
+                        <button class="reveal-btn bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors" data-target="${explanationId}">Reveal Issues</button>
+                        <div id="${explanationId}" class="hidden mt-4 text-blue-700 whitespace-pre-line">
+                            <h5 class="font-bold mb-2">Explanation of Issues:</h5>
+                            ${explanation}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+    </script>
+</body>
+</html>
