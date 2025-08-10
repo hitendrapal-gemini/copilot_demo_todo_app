@@ -1,8 +1,6 @@
 # Initial prompt (presentation.md)
 For the given file create a interactive course to learn prompting technique.
 
-
-
 Instruction:
 
 - Design an interactive and visually stunning web page application that has modern animations, sleek transitions, and user-friendly controls.
