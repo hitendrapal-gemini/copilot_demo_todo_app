@@ -26,7 +26,7 @@
         .technique-section {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: opacity 0.45s ease-out, transform 0.45s ease-out;
         }
         .technique-section.visible {
             opacity: 1;
@@ -50,6 +50,172 @@
         }
         .code-block:hover .copy-btn {
             opacity: 1;
+        }
+
+        /* --- New slide-show styles --- */
+        .technique-section { display: none; } /* hide by default */
+        .technique-section.active { display: block; } /* visible slide */
+        /* Active nav item */
+        .nav-active {
+            background-color: #ecfeff; /* tailwind teal-50 */
+            color: #0f766e !important; /* tailwind teal-700 */
+            font-weight: 600;
+        }
+        /* Slide controls (floating) */
+        #slide-controls button {
+            background: rgba(15,118,110,0.95);
+            color: white;
+            border: none;
+            padding: 0.6rem;
+            border-radius: 999px;
+            box-shadow: 0 4px 14px rgba(15,118,110,0.15);
+            cursor: pointer;
+        }
+        #slide-controls button:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        /* --- Readability adjustments --- */
+        /* Center and limit content width for readable line length */
+        .content-wrapper {
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 18px;           /* slightly larger base text */
+            line-height: 1.7;         /* increased line-height for readability */
+        }
+        /* Slightly more generous padding for each slide */
+        .technique-section {
+            padding: 2rem; /* override smaller utility padding for comfort */
+        }
+        /* Larger section headings */
+        .technique-section h2 {
+            font-size: 1.75rem;
+        }
+        /* Make code blocks easier to read */
+        .code-block pre, .code-block code {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- Enhanced Infographic / Flow styles --- */
+        .infographic-container {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+            border: 2px solid #5eead4;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .infographic-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #14b8a6, #06b6d4, #3b82f6);
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .infographic-title {
+            color: #0f766e;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .flow-container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+        
+        .flow-step {
+            background: white;
+            border: 2px solid #a7f3d0;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            color: #065f46;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 120px;
+            text-align: center;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .flow-step:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25);
+            border-color: #10b981;
+        }
+        
+        .flow-arrow {
+            color: #14b8a6;
+            font-size: 1.5rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            margin: 0 0.5rem;
+        }
+        
+        .flow-arrow svg {
+            width: 2rem;
+            height: 2rem;
+            filter: drop-shadow(0 2px 4px rgba(20, 184, 166, 0.3));
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* Stagger animation delays for flow steps */
+        .flow-step:nth-child(1) { animation-delay: 0.1s; }
+        .flow-step:nth-child(3) { animation-delay: 0.3s; }
+        .flow-step:nth-child(5) { animation-delay: 0.5s; }
+        .flow-step:nth-child(7) { animation-delay: 0.7s; }
+        .flow-step:nth-child(9) { animation-delay: 0.9s; }
+        
+        /* Enhanced responsive design for flows */
+        @media (max-width: 768px) {
+            .flow-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 0.5rem 0;
+            }
+            .flow-step {
+                min-width: unset;
+                width: 100%;
+            }
+        }
+        
+        /* Interactive hover effects for entire infographic */
+        .infographic-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(20, 184, 166, 0.15);
         }
     </style>
 </head>
@@ -87,13 +253,19 @@
         </button>
 
         <!-- Main Content -->
-        <main class="flex-1 p-4 sm:p-6 md:p-10">
-            <header class="mb-12 text-center">
+        <main class="flex-1 p-6 sm:p-8 md:p-12 lg:p-16">
+            <!-- <header class="mb-12 text-center">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-cyan-500">Mastering Prompting Techniques</h1>
                 <p class="text-lg text-gray-500 max-w-3xl mx-auto">An interactive guide for Software Developers to enhance code generation with powerful prompting strategies.</p>
-            </header>
+            </header> -->
 
-            <div id="content-sections" class="space-y-16">
+            <!-- Slide controls (floating) -->
+            <div id="slide-controls" class="fixed right-6 bottom-12 flex flex-col gap-3 z-40">
+                <button id="prev-slide" aria-label="Previous slide" title="Previous (←)">‹</button>
+                <button id="next-slide" aria-label="Next slide" title="Next (→)">›</button>
+            </div>
+
+            <div id="content-sections" class="space-y-16 content-wrapper">
                 <!-- Sections will be dynamically generated here -->
             </div>
         </main>
@@ -247,11 +419,20 @@
                 // Nav Item
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <a href="#${tech.id}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-600 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200">
+                    <a href="#${tech.id}" data-index="${index}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-600 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200">
                         <span class="text-teal-500">${tech.icon}</span>
                         <span>${tech.title}</span>
                     </a>
                 `;
+                // attach click to jump to slide
+                const anchor = li.querySelector('a');
+                anchor.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const idx = Number(anchor.getAttribute('data-index'));
+                    showSlide(idx);
+                    // close sidebar on small screens
+                    if (window.innerWidth < 1024) closeSidebar();
+                });
                 navMenu.appendChild(li);
 
                 // Content Section
@@ -305,16 +486,18 @@
                     `;
                 } else {
                      contentHTML += `
-                        <div class="space-y-8">
-                            <div>
-                                <h3 class="text-xl font-semibold mb-3 text-teal-700">Purpose</h3>
-                                <p class="text-gray-600 leading-relaxed">${data.purpose}</p>
-                            </div>
-                            
-                            <div class="grid md:grid-cols-2 gap-6">
-                                ${createCard('Best to use this technique', data.bestUse, 'check')}
-                                ${createCard('Must avoid this technique', data.avoidUse, 'x')}
-                            </div>
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 text-teal-700">Purpose</h3>
+                            <p class="text-gray-600 leading-relaxed">${data.purpose}</p>
+                        </div>
+
+                        ${createInfographic(tech.id)}
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            ${createCard('Best to use this technique', data.bestUse, 'check')}
+                            ${createCard('Must avoid this technique', data.avoidUse, 'x')}
+                        </div>
 
                             <div>
                                 <h3 class="text-xl font-semibold mb-3 text-teal-700">Example</h3>
@@ -493,6 +676,64 @@
                     }
                 });
             }
+
+            // --- Slide show logic: show one technique at a time and highlight sidebar ---
+            const slides = Array.from(document.querySelectorAll('.technique-section'));
+            const navAnchors = Array.from(document.querySelectorAll('#nav-menu a'));
+            let currentSlide = 0;
+
+            // showSlide defined here so it's available to nav click (above) and controls
+            function showSlide(i) {
+                if (!slides.length) return;
+                const newIndex = Math.max(0, Math.min(slides.length - 1, i));
+                // hide all
+                slides.forEach((s, idx) => {
+                    s.classList.remove('active', 'visible');
+                    // small spacing: keep only the active slide visible in flow
+                    if (idx !== newIndex) s.style.display = 'none';
+                });
+                // show new
+                const slide = slides[newIndex];
+                slide.style.display = '';
+                // force small delay to allow transition class usage
+                requestAnimationFrame(() => {
+                    slide.classList.add('active', 'visible');
+                });
+
+                // update nav highlight
+                navAnchors.forEach((a) => a.classList.remove('nav-active'));
+                const activeNav = document.querySelector(`#nav-menu a[data-index="${newIndex}"]`);
+                if (activeNav) activeNav.classList.add('nav-active');
+
+                currentSlide = newIndex;
+
+                // update prev/next button disabled state
+                document.getElementById('prev-slide').disabled = (currentSlide === 0);
+                document.getElementById('next-slide').disabled = (currentSlide === slides.length - 1);
+            }
+
+            // initialize slideshow
+            if (slides.length) {
+                slides.forEach(s => s.style.display = 'none'); // hide all first
+                showSlide(0);
+            }
+
+            // Prev/Next controls
+            const prevBtn = document.getElementById('prev-slide');
+            const nextBtn = document.getElementById('next-slide');
+            prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+            nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+
+            // Keyboard navigation (left/right)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') showSlide(currentSlide - 1);
+                if (e.key === 'ArrowRight') showSlide(currentSlide + 1);
+            });
+
+            // Ensure highlights are correct on resize (in case sidebar auto-shows)
+            window.addEventListener('resize', () => {
+                if (slides.length) showSlide(currentSlide);
+            });
         });
 
         function createCard(title, text, iconType) {
@@ -542,6 +783,56 @@
             `;
         }
 
+        // Enhanced infographic / flowchart generator for each technique
+        function createInfographic(id) {
+            const mappings = {
+                'four-s': ['Single task', 'Be Specific', 'Keep Short', 'Surround with context'],
+                'zero-shot': ['Instruction', 'Model infers', 'Output'],
+                'few-shot': ['Example 1', 'Example 2', 'User Input', 'Model matches style'],
+                'cot': ["Break down steps", "Reason through logic", "Produce structured code"],
+                'mega-prompt': ['Role & Context', 'Define Capabilities', 'Provide Examples', 'Process User Input'],
+                'adaptive': ['Analyze Previous', 'Assess Current State', 'Adjust Strategy', 'Generate Output'],
+                'roleplay': ['Choose Persona', 'Set Context', 'Provide Requirements', 'Model Responds in Role'],
+                'multimodal': ['Upload Image', 'Provide Text Context', 'Extract Information', 'Generate Code'],
+                'hallucination': ['Give Instruction', 'Request Verification', 'Limit Scope', 'Validate Output'],
+                'final-tips': ['Start Simple', 'Iterate & Improve', 'Document Success'],
+                'summary': ['Choose Technique', 'Apply Method', 'Evaluate Results']
+            };
+            
+            const steps = mappings[id] || ['Step 1', 'Step 2', 'Step 3'];
+            
+            // Enhanced flow with better visual separation and icons
+            const flowItems = steps.map((step, i) => {
+                const isLast = i === steps.length - 1;
+                const stepElement = `<div class="flow-step">${escapeHtml(step)}</div>`;
+                const arrow = isLast ? '' : `
+                    <div class="flow-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                `;
+                return stepElement + arrow;
+            }).join('');
+
+            return `
+                <div class="infographic-container">
+                    <div class="infographic-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Process Flow
+                    </div>
+                    <div class="flow-container">
+                        ${flowItems}
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
     </script>
 </body>
 </html>
