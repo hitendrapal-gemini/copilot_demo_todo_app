@@ -315,7 +315,7 @@
                 bestUse: "When you want consistent output style or the task may be ambiguous.",
                 avoidUse: "When the task is very simple or when providing examples may bias the output undesirably.",
                 badPrompt: "List tasks.",
-                goodPrompt: "Write a Python function that prints each task in a list called `todo_list`."
+                goodPrompt: "Write a Python function that prints each task in a list called `todo_list`.\n Example 1: ....\n Example 2: ....",
             },
             'cot': {
                 purpose: "Encourage the model to reason through multi-step code generation or logic for more accurate results.",
@@ -337,19 +337,19 @@
                 bestUse: "For complex, multi-capability code generation or when style/format consistency is required.",
                 avoidUse: "When the task is simple or when brevity and speed are more important than completeness.",
                 badPrompt: "Make a to-do app.",
-                goodPrompt: "Write a Python class for a to-do app with methods to add, delete, and mark tasks as complete.",
+                goodPrompt: "You are an expert Python developer.\nThe to-do app allows users to:\n- Add, delete, and complete tasks\n- Set deadlines and priorities\nRespond with clean, well-documented code.\n\nExample Input: Write a function to add a task with a deadline.\nExample Output: def add_task(todo_list, task, deadline):\n    todo_list.append({'task': task, 'deadline': deadline})\n\nUser Input: Write a function to mark a task as high priority.",
                 flawedPrompt: "I want everything for a to-do app.",
                 flawedExplanation: "- Overly broad and unspecific.\n- No language, structure, or features detailed.\n- No examples or style guidance."
             },
             'adaptive': {
                 purpose: "Adjust the prompt based on prior user actions or evolving context for dynamic, multi-turn code generation.",
                 promptFormat: `Based on the following completed tasks:\n- [Completed Task 1]\n- [Completed Task 2]\n\nAnd these remaining tasks:\n- [Remaining Task 1] ([Deadline/priority])\n- [Remaining Task 2] ([Deadline/priority])\n\n[Instruction for next action]`,
-                examplePrompt: `Based on the following completed features:\n- Add task function\n- Delete task function\n\nAnd these remaining features:\n- Mark task as complete (high priority)\n- List all tasks (medium priority)\n\nWrite the next function, focusing on the highest priority.`,
-                exampleOutput: `def complete_task(todo_list, task):\n    if task in todo_list:\n        todo_list[todo_list.index(task)] += ' (done)'`,
+                examplePrompt: `Previous development session results:\n- Created basic Todo model with title and description\n- Added user authentication system\n- Built HTML forms but encountered validation errors\n\nCurrent state analysis:\n- Users can register/login successfully\n- Todo creation fails due to missing validation\n- Dashboard shows empty state correctly\n\nBased on this context, prioritize fixing form validation over adding new features. Generate a Flask-WTF form class with proper validation for the todo creation.`,
+                exampleOutput: `# Analysis: Form validation is blocking core functionality\n# Strategy: Focus on robust validation before new features\n\nfrom flask_wtf import FlaskForm\nfrom wtforms import StringField, TextAreaField, DateField\nfrom wtforms.validators import DataRequired, Length\n\nclass TodoForm(FlaskForm):\n    title = StringField('Title', validators=[\n        DataRequired(message='Title is required'),\n        Length(min=1, max=100, message='Title must be 1-100 characters')\n    ])\n    description = TextAreaField('Description', validators=[\n        Length(max=500, message='Description cannot exceed 500 characters')\n    ])\n    due_date = DateField('Due Date', validators=[DataRequired()])\n\n# Next steps: Update route to use this form and handle validation errors`,
                 bestUse: "For multi-turn, context-sensitive code generation where requirements evolve.",
                 avoidUse: "When there is no prior context or when a single, isolated task is required.",
                 badPrompt: "Write another function.",
-                goodPrompt: "Based on the completed add and delete functions, write a Python function to mark a task as complete."
+                goodPrompt: "Based on the previous authentication work and current form validation issues, create a robust todo form class that prevents the errors we encountered."
             },
             'roleplay': {
                 purpose: "Assign the model a persona or role to shape the tone, style, or expertise of the code response.",
@@ -752,7 +752,7 @@
             return `
                 <div>
                     <h4 class="font-semibold text-gray-600 mb-2">${title}</h4>
-                    <div class="code-block bg-gray-800 rounded-lg p-4 text-white font-mono text-sm overflow-x-auto">
+                    <div class="code-block bg-gray-100 rounded-lg p-4 text-gray-800 font-mono text-sm overflow-x-auto border border-gray-200">
                         <button class="copy-btn">Copy</button>
                         <pre><code>${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
                     </div>
