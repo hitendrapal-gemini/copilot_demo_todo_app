@@ -13,7 +13,50 @@ This presentation covers key prompt engineering techniques for software develope
 
 ---
 
-## 1. Zero-Shot Prompting
+## 1. 4S Technique (Single, Specific, Short, Surround)
+
+**Purpose:**
+Craft prompts that are focused, clear, concise, and provide enough context for accurate code generation.
+
+**Prompt Format:**
+```
+[Single, Specific, Short instruction]
+// Surround with context or comments if needed
+```
+
+**Example Prompt:**
+```
+Add a due date field to each todo item. // Add field to model // Update form // Show in dashboard
+```
+
+**Example Output:**
+```python
+# Add due_date field to Todo model
+class Todo(db.Model):
+    # ...existing code...
+    due_date = db.Column(db.Date)
+    # ...existing code...
+
+# Update add task form and dashboard template accordingly
+```
+
+**Best to use this technique:**
+When you want to minimize ambiguity and maximize clarity for simple or multi-step tasks.
+
+**Must avoid to use this technique:**
+When the task is inherently complex and needs more detailed breakdown or examples.
+
+**Showcasing Bad vs. Good:**
+| Principle | ❌ Bad Prompt | ✅ Good Prompt |
+|-----------|--------------|---------------|
+| **Single** | "Add due date and priority to tasks." | "Add a due date field to each todo item." |
+| **Specific** | "Improve the dashboard." | "Display each todo item's due date in the dashboard table." |
+| **Short** | "Can you please update the code so that every time a user adds a new task, the app will also ask for a due date and then show that due date in the dashboard view?" | "Add a due date field to the add task form and show it in the dashboard." |
+| **Surround** | "Add a due date." | "Add a due date field to each todo item. // Add field to model // Update form // Show in dashboard" |
+
+---
+
+## 2. Zero-Shot Prompting
 
 **Purpose:**
 Use for direct, simple code generation tasks where the model is expected to infer the task from the instruction alone.
@@ -48,7 +91,7 @@ When the task is complex, ambiguous, or requires specific style, reasoning, or c
 
 ---
 
-## 2. Few-Shot Prompting
+## 3. Few-Shot Prompting
 
 **Purpose:**
 Guide the model’s response by providing a few input-output code examples before the main user query.
@@ -101,7 +144,7 @@ When the task is very simple or when providing examples may bias the output unde
 
 ---
 
-## 3. Chain-of-Thought (CoT) Prompting
+## 4. Chain-of-Thought (CoT) Prompting
 
 **Purpose:**
 Encourage the model to reason through multi-step code generation or logic for more accurate results.
@@ -154,7 +197,7 @@ Make sure tasks are not repeated.
 
 ---
 
-## 4. Mega Prompt
+## 5. Mega Prompt
 
 **Purpose:**
 Provide extensive context, instructions, and examples for complex or multi-capability code generation tasks.
@@ -220,7 +263,7 @@ I want everything for a to-do app.
 
 ---
 
-## 5. Adaptive Prompt
+## 6. Adaptive Prompt
 
 **Purpose:**
 Adjust the prompt based on prior user actions or evolving context for dynamic, multi-turn code generation.
@@ -281,7 +324,7 @@ Keep going.
 
 ---
 
-## 6. Roleplay Prompt
+## 7. Roleplay Prompt
 
 **Purpose:**
 Assign the model a persona or role to shape the tone, style, or expertise of the code response.
@@ -344,7 +387,7 @@ Do it like an expert.
 
 ---
 
-## 7. Multimodal Prompt
+## 8. Multimodal Prompt
 
 **Purpose:**
 Enable the model to process and reason with both text and images for richer, more flexible code generation input.
@@ -404,7 +447,7 @@ Look at this and code.
 
 ---
 
-## 8. Hallucination Handling
+## 9. Hallucination Handling
 
 **Purpose:**
 Reduce the risk of the model generating plausible but incorrect or fabricated code (hallucinations) by explicitly instructing it to verify, cite, or limit its output to known information.
@@ -450,6 +493,7 @@ When accuracy is critical, or when the model may be prone to making up details.
 
 | Technique         | Purpose                                   | Format Example                                     | Best For                          |
 |-------------------|-------------------------------------------|----------------------------------------------------|------------------------------------|
+| 4S Technique      | Focused, clear, concise prompts          | "[Single, Specific, Short instruction] // ..."    | Minimizing ambiguity, simple tasks |
 | Zero-Shot         | Direct, simple tasks                      | "[Instruction]"                                    | Simple, unambiguous requests       |
 | Few-Shot          | Style/output consistency                  | "User: ... Assistant: ... (examples)"              | Tasks needing format/style mimicry |
 | Chain-of-Thought  | Reasoning, prioritization                 | "Let's think step by step. [Scenario]"             | Multi-step reasoning               |
